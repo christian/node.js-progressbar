@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title>Test</title>
+        
+    </head>
+    <body>
+        <form action="/upload" enctype="multipart/form-data" method="post" id="my_form">
+            <input type="text" name="title"><br>
+            <input type="file" name="upload" multiple="multiple"><br>
+            <input type="submit" value="Upload" id="submit_form">
+        </form>
+        <p id="progress"></p>
+        
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="jquery.iframe-post-form.js"></script>
+    
+    <script type="text/javascript" charset="utf-8">
+        $(function() {
+            $('form').iframePostForm
+            ({
+                post : function ()
+                {
+                    // creating a long polling client
+                    var client = new function() {
+                      var _poll = function() {
+                        $.get('/getProgress', function(response) {
+                          $('#progress').html(response);
+                          _poll();
+                        });
+                      }
+                    
+                      $.get('/getProgress', function(response) {
+                        $('#progress').html(response);
+                        if ($('#progress').html().match(/^File\ saved/)) {
+                             return;
+                        } else {
+                            _poll();
+                        }
+                      });
+                    }
+                },
+                complete : function (response)
+                {
+                    $('#progress').html(response);
+                }
+            });
+        })
+    </script>
+    </body>
+</html>
+

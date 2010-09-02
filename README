@@ -1,0 +1,6 @@
+This is just a prototype !!
+
+== Improvments
+
+* websocks (only on google chrome). longpoling a mere hack http://armstrongonsoftware.blogspot.com/2009/12/comet-is-dead-long-live-websockets.html
+* jquery ui - an animated progress bar
